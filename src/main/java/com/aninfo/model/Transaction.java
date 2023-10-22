@@ -9,7 +9,7 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private TransactionType type;
+    private String type;
     private Double amount;
     @ManyToOne
     private Account account;
@@ -18,7 +18,7 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(TransactionType type, Double amount, Account account) {
+    public Transaction(String type, Double amount, Account account) {
         this.type = type;
         this.amount = amount;
         this.account = account;
@@ -28,11 +28,11 @@ public class Transaction {
         return id;
     }
 
-    public TransactionType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(TransactionType type) {
+    public void setType(String type) {
         this.type = type;
     }
 

@@ -1,6 +1,7 @@
 package com.aninfo.service;
 
 import com.aninfo.model.Account;
+import com.aninfo.model.Transaction;
 import com.aninfo.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,9 +43,9 @@ public class AccountService {
     public Account deposit(Long cbu, Double sum) {
         Account account = accountRepository.findAccountByCbu(cbu);
 
-        transactionService.createDeposit(sum, account);
+        Transaction transacion = transactionService.createDeposit(sum, account);
 
-        account.setBalance(account.getBalance() + sum);
+        account.setBalance(account.getBalance() + transacion.getAmount());
         accountRepository.save(account);
 
         return account;
@@ -54,9 +55,9 @@ public class AccountService {
     public Account withdraw(Long cbu, Double sum) {
         Account account = accountRepository.findAccountByCbu(cbu);
 
-        transactionService.createWithdraw(sum, account);
+        Transaction transaction = transactionService.createWithdraw(sum, account);
 
-        account.setBalance(account.getBalance() - sum);
+        account.setBalance(account.getBalance() - transaction.getAmount());
         accountRepository.save(account);
 
         return account;

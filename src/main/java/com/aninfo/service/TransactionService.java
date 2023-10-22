@@ -29,7 +29,7 @@ public class TransactionService {
             throw new InsufficientFundsException("Insufficient funds");
         }
 
-        Transaction transaction = new Transaction(TransactionType.WITHDRAWAL, sum, account);
+        Transaction transaction = new Transaction(TransactionType.WITHDRAWAL.getValue(), sum, account);
 
         return transactionRepository.save(transaction);
     }
@@ -42,11 +42,11 @@ public class TransactionService {
 
         if (sum >= TransactionConstants.DEPOSIT_SUM_PROMO.getValue()) {
             double extra = sum * TransactionConstants.DEPOSIT_EXTRA_PERCENTAGE.getValue();
-            if (extra > TransactionConstants.DEPOSIT_EXTRA_MAX_AMOUNT.getValue()) extra = TransactionConstants.DEPOSIT_EXTRA_MAX_AMOUNT.getValue();
+            if (extra >= TransactionConstants.DEPOSIT_EXTRA_MAX_AMOUNT.getValue()) extra = TransactionConstants.DEPOSIT_EXTRA_MAX_AMOUNT.getValue();
             sum += extra;
         }
 
-        Transaction transaction = new Transaction(TransactionType.DEPOSIT, sum, account);
+        Transaction transaction = new Transaction(TransactionType.DEPOSIT.getValue(), sum, account);
 
         return transactionRepository.save(transaction);
     }

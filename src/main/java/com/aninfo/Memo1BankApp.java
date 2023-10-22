@@ -1,7 +1,10 @@
 package com.aninfo;
 
 import com.aninfo.model.Account;
+import com.aninfo.model.Transaction;
+import com.aninfo.model.TransactionType;
 import com.aninfo.service.AccountService;
+import com.aninfo.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,7 +13,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -26,9 +34,24 @@ public class Memo1BankApp {
 
 	@Autowired
 	private AccountService accountService;
+	@Autowired
+	private TransactionService transactionService;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 		SpringApplication.run(Memo1BankApp.class, args);
+		seed();
+	}
+
+	public static void seed() throws SQLException {
+		// This method creates the TransactionType table and seeds data
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:DBNAME", "root", "SA");
+
+		Statement statement = connection.createStatement();
+
+		statement.execute(String.format("INSERT INTO TRANSACTION_TYPE (id, description) VALUES (%d, 'Deposit');", TransactionType.DEPOSIT_ID));
+		statement.execute(String.format("INSERT INTO TRANSACTION_TYPE (id, description) VALUES (%d, 'Withdraw');", TransactionType.WITHDRAWAL_ID));
+
+		connection.close();
 	}
 
 	@PostMapping("/accounts")
@@ -73,6 +96,11 @@ public class Memo1BankApp {
 	@PutMapping("/accounts/{cbu}/deposit")
 	public Account deposit(@PathVariable Long cbu, @RequestParam Double sum) {
 		return accountService.deposit(cbu, sum);
+	}
+
+	@GetMapping("/accounts/{cbu}/transactions")
+	public Collection<Transaction> getTransactions(@PathVariable Long cbu) {
+		return transactionService.findAllByAccount(cbu);
 	}
 
 	@Bean

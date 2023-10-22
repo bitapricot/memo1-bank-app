@@ -9,7 +9,7 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private TransactionType type;
     private Double amount;
     @ManyToOne

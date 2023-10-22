@@ -103,6 +103,17 @@ public class Memo1BankApp {
 		return transactionService.findAllByAccount(cbu);
 	}
 
+	@GetMapping("/transactions/{id}")
+	public ResponseEntity<Transaction> getTransaction(@PathVariable Long id) {
+		Optional<Transaction> transactionOptional = transactionService.findById(id);
+		return ResponseEntity.of(transactionOptional);
+	}
+
+	@DeleteMapping("/transactions/{id}")
+	public void deleteTransaction(@PathVariable Long id) {
+		transactionService.deleteById(id);
+	}
+
 	@Bean
 	public Docket apiDocket() {
 		return new Docket(DocumentationType.SWAGGER_2)

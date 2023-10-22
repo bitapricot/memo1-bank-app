@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TransactionService {
@@ -49,15 +50,15 @@ public class TransactionService {
         return transactionRepository.save(transaction);
     }
 
-    public Transaction findTransactionById(Long transactionId) {
-        return transactionRepository.findById(transactionId).orElse(null);
+    public Optional<Transaction> findById(Long transactionId) {
+        return transactionRepository.findById(transactionId);
     }
 
     public Collection<Transaction> findAllByAccount(Long cbu) {
         return transactionRepository.findAllByAccount_Cbu(cbu);
     }
 
-    public void deleteTransaction(Long transactionId) {
+    public void deleteById(Long transactionId) {
         transactionRepository.deleteById(transactionId);
     }
 }

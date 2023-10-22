@@ -7,12 +7,10 @@ import com.aninfo.model.Transaction;
 import com.aninfo.model.TransactionConstants;
 import com.aninfo.model.TransactionType;
 import com.aninfo.repository.TransactionRepository;
-import com.aninfo.repository.TransactionTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,8 +18,6 @@ public class TransactionService {
 
     @Autowired
     private TransactionRepository transactionRepository;
-    @Autowired
-    private TransactionTypeRepository transactionTypeRepository;
 
     public TransactionService(TransactionRepository transactionRepository) {
         this.transactionRepository = transactionRepository;
@@ -33,8 +29,7 @@ public class TransactionService {
             throw new InsufficientFundsException("Insufficient funds");
         }
 
-        TransactionType withdrawalType = transactionTypeRepository.findById(TransactionType.WITHDRAWAL_ID).get();
-        Transaction transaction = new Transaction(withdrawalType, sum, account);
+        Transaction transaction = new Transaction(TransactionType.WITHDRAWAL, sum, account);
 
         return transactionRepository.save(transaction);
     }
@@ -51,8 +46,7 @@ public class TransactionService {
             sum += extra;
         }
 
-        TransactionType depositType = transactionTypeRepository.findById(TransactionType.DEPOSIT_ID).get();
-        Transaction transaction = new Transaction(depositType, sum, account);
+        Transaction transaction = new Transaction(TransactionType.DEPOSIT, sum, account);
 
         return transactionRepository.save(transaction);
     }

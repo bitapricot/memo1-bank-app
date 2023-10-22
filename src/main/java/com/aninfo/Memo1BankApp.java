@@ -2,7 +2,6 @@ package com.aninfo;
 
 import com.aninfo.model.Account;
 import com.aninfo.model.Transaction;
-import com.aninfo.model.TransactionType;
 import com.aninfo.service.AccountService;
 import com.aninfo.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,19 +38,6 @@ public class Memo1BankApp {
 
 	public static void main(String[] args) throws SQLException {
 		SpringApplication.run(Memo1BankApp.class, args);
-		seed();
-	}
-
-	public static void seed() throws SQLException {
-		// This method creates the TransactionType table and seeds data
-		Connection connection = DriverManager.getConnection("jdbc:h2:mem:DBNAME", "root", "SA");
-
-		Statement statement = connection.createStatement();
-
-		statement.execute(String.format("INSERT INTO TRANSACTION_TYPE (id, description) VALUES (%d, 'Deposit');", TransactionType.DEPOSIT_ID));
-		statement.execute(String.format("INSERT INTO TRANSACTION_TYPE (id, description) VALUES (%d, 'Withdraw');", TransactionType.WITHDRAWAL_ID));
-
-		connection.close();
 	}
 
 	@PostMapping("/accounts")

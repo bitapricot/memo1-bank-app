@@ -9,7 +9,6 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToOne
     private TransactionType type;
     private Double amount;
     @ManyToOne
@@ -31,14 +30,6 @@ public class Transaction {
 
     public TransactionType getType() {
         return type;
-    }
-
-    public boolean isWithdrawal() {
-        return type.isWithdrawal();
-    }
-
-    public boolean isDeposit() {
-        return type.isDeposit();
     }
 
     public void setType(TransactionType type) {

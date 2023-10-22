@@ -1,24 +1,17 @@
 package com.aninfo.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+public enum TransactionType {
 
-@Entity
-public class TransactionType {
-    public static final int DEPOSIT_ID = 1;
-    public static final int WITHDRAWAL_ID = 2;
+    DEPOSIT("DEPOSIT"),
+    WITHDRAWAL("WITHDRAWAL");
 
-    @Id
-    private int id;
-    private String description;
+    private String value;
 
-    public boolean isWithdrawal() {
-        return id == WITHDRAWAL_ID;
+    TransactionType(String value) {
+        this.value = value;
     }
 
-    public boolean isDeposit() {
-        return id == DEPOSIT_ID;
+    public String getValue() {
+        return value;
     }
 }
-
-
